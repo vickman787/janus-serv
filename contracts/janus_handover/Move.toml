@@ -1,0 +1,6 @@
+[package]
+name = "janus_handover"
+edition = "2024"
+
+[addresses]
+janus_handover = "0x0"

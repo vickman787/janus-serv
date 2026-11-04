@@ -1,0 +1,8 @@
+{
+  "compiler": "sui 1.83.0-16d2dc1e05ed",
+  "release": "testnet-v1.83.0",
+  "sourceSha256": "4c4eeb8cee2d45d7703526887e8ebac395fc4443f29a471d01a49757c64fadac",
+  "artifactSha256": "911852e7f90403a44887dbf646ff90dcdf2251fd9afb79d2fa0327232a1d5689",
+  "moveTestsPassed": 16,
+  "published": false
+}

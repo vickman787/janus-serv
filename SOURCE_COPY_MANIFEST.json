@@ -1,0 +1,364 @@
+{
+  "source": "C:\\Projects\\Janus-sui",
+  "sourceCommit": "8f1ee11090d83b8903ef777fdf321703b4bd4bbf",
+  "copiedAtUtc": "2026-11-04T16:06:54.4428778Z",
+  "method": "Selected tracked working-tree files; SHA256 verified",
+  "excluded": "Secrets, .env, .data, .git history, node_modules, dist, .tools, recorded media, screenshots, generated evidence manifests, deployment config",
+  "files": [
+    {
+      "path": ".dockerignore",
+      "sha256": "A153BCDBDA4D9126F4944F2026ECE7FEFE3F85DAD444FCAB1D3EDBEEE77B7A50",
+      "bytes": 91
+    },
+    {
+      "path": ".env.example",
+      "sha256": "9B799AE3EDE8BABE5B99AC54DF8E6A1C2810933F9690DF130A2093574B9DF206",
+      "bytes": 1218
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "8A92B3A8A6E6AB3453256F960C4CA37218D0C8F1614E97F4C7410E4171BE7AB5",
+      "bytes": 140
+    },
+    {
+      "path": "Dockerfile",
+      "sha256": "FDA3C577973B5953C3069739879BCD3AADC621B102470EF934117375198FDCE2",
+      "bytes": 229
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "F61D190A71A778827F9ABDC191285AA3895EC47FE9195986CC6CC31A6E2BB12F",
+      "bytes": 1088
+    },
+    {
+      "path": "apps/api/src/auth.ts",
+      "sha256": "619A55CE8D511B79E907D84E5124E14C77214B4F6A788868F80CBD0ACA3356D6",
+      "bytes": 3617
+    },
+    {
+      "path": "apps/api/src/engine.ts",
+      "sha256": "07F1E7F888FF85E1D6C08F0592082889D9BAA4B36C62B8B3BEC331034966C78B",
+      "bytes": 38058
+    },
+    {
+      "path": "apps/api/src/routes.ts",
+      "sha256": "C18AE791DACAE0B3B98C3C30D86B844FCCF35B5CE397F3C69ACB27EE00F9E8CC",
+      "bytes": 10259
+    },
+    {
+      "path": "apps/api/src/server.ts",
+      "sha256": "5FB2E0B75212E477E0DB7188AAA21E0583D6CB8712C5329919969E99D1836C2B",
+      "bytes": 11245
+    },
+    {
+      "path": "apps/api/src/static.ts",
+      "sha256": "BA579B60E53D786A5111BF07FD7CF12C67E95218997FA8BDC327578DBAEE7099",
+      "bytes": 1267
+    },
+    {
+      "path": "apps/api/src/store.ts",
+      "sha256": "BA185358B9490182C88B0C0432368FC152B1B4B155876F2FDFDFCC8683804FA7",
+      "bytes": 2889
+    },
+    {
+      "path": "apps/web/index.html",
+      "sha256": "65B036680295E15449264174860114C46AF6A67FB4C9EFD8BED74DCFE1EB11A0",
+      "bytes": 330
+    },
+    {
+      "path": "apps/web/src/WalletCheck.tsx",
+      "sha256": "B7096005C10E385F0C53029DB44F3211C5A7E729FCC23FFF3508F4B0E2F3274E",
+      "bytes": 9770
+    },
+    {
+      "path": "apps/web/src/app.css",
+      "sha256": "C34D00509806F2C0AAEB9FE5BB6E988E8CA8F8569479B5948FE89D3120A3C0E2",
+      "bytes": 5783
+    },
+    {
+      "path": "apps/web/src/dapp-kit.ts",
+      "sha256": "C19EC34CFFA5018769E7783CC51EA74F92C7B0938508EBE4ECBC7616DEDA97E2",
+      "bytes": 374
+    },
+    {
+      "path": "apps/web/src/env.d.ts",
+      "sha256": "424FAF9241DD699DDA995B367ED36665732DA1E6EC1F33B2FD40394488ECAC92",
+      "bytes": 39
+    },
+    {
+      "path": "apps/web/src/main.tsx",
+      "sha256": "FF5CD70FC9EFB2ABCB4F243217E63D062A8F5068F2A5142EA71D0F4916D1ED3B",
+      "bytes": 34120
+    },
+    {
+      "path": "apps/web/src/style.css",
+      "sha256": "3B1E5CCA20FE646911C74976A5B31FA9B2D708D591F2ABB8947B8CE076C94450",
+      "bytes": 3480
+    },
+    {
+      "path": "apps/worker/src/main.ts",
+      "sha256": "07BAC617F1E5FBEEFFE1309401342AFEA3D7571D95F8B6072CCED9A128B56579",
+      "bytes": 1263
+    },
+    {
+      "path": "contracts/janus_handover/Move.lock",
+      "sha256": "A944111BE7B606F7834B6A8E156EFE034CCCBA2035649B706953090477BFAE68",
+      "bytes": 953
+    },
+    {
+      "path": "contracts/janus_handover/Move.toml",
+      "sha256": "4E04B1EF78488781D0DD82216ABBFFE8DF954C5CFD0E9F08018B1E448C1FB272",
+      "bytes": 88
+    },
+    {
+      "path": "contracts/janus_handover/compiled/package.json",
+      "sha256": "911852E7F90403A44887DBF646FF90DCDF2251FD9AFB79D2FA0327232A1D5689",
+      "bytes": 2858
+    },
+    {
+      "path": "contracts/janus_handover/compiled/provenance.json",
+      "sha256": "F6EE648BBC8B6A49F4538615AAC083D22823A099B5A99676C29E03B6E0FC1211",
+      "bytes": 296
+    },
+    {
+      "path": "contracts/janus_handover/sources/handover.move",
+      "sha256": "4C4EEB8CEE2D45D7703526887E8EBAC395FC4443F29A471D01A49757C64FADAC",
+      "bytes": 9953
+    },
+    {
+      "path": "docs/architecture.md",
+      "sha256": "B94E581ABCFCEECEAA061B6AE29CC16F7F4C755539EF0450E3E7B5727DF6B5CF",
+      "bytes": 2676
+    },
+    {
+      "path": "docs/integration-spike.md",
+      "sha256": "E2007807C68AA157E5F911C37223F8B0ADF14C1E95A72AB44DFD5BEFD0C36198",
+      "bytes": 8376
+    },
+    {
+      "path": "docs/manual-test.md",
+      "sha256": "41AE859171BFD5C9D05F4B5B237EF3864F7E60DD8CDD82D463906F9E5812894C",
+      "bytes": 3212
+    },
+    {
+      "path": "docs/prior-work.md",
+      "sha256": "76E62E349D6547DA38094C774AF1834E78388162B240288D4567406BB85D0EDC",
+      "bytes": 894
+    },
+    {
+      "path": "docs/recovery-protocol.md",
+      "sha256": "300235C13A3C4451F806E51C96F7627B1DA8C20DCFD892997F6328336F0DD788",
+      "bytes": 2953
+    },
+    {
+      "path": "docs/threat-model.md",
+      "sha256": "98CDC99A9AC4D5A2D4ED30CEEB365C3AB66EB75ACA62EF733D778CDADC7E6539",
+      "bytes": 2040
+    },
+    {
+      "path": "docs/verification.md",
+      "sha256": "CBCFDE3979DF55994F42A8D0467422561C5C185222E285099C5413C709627ADB",
+      "bytes": 3315
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "D59F1E1185DEC164D9082267B27016B9ABD78196FB3D4B9F86ED69EAD8A9E79B",
+      "bytes": 97168
+    },
+    {
+      "path": "package.json",
+      "sha256": "64790FD0D24E3DE798FAEF6106FD604C89793E8636601E9C507CE764FCCF337F",
+      "bytes": 1478
+    },
+    {
+      "path": "packages/chain/src/approved-bytes.ts",
+      "sha256": "BA92C5337EE4CFC0FCE7083FF88935943C4019C485BEA8039393C2833E493618",
+      "bytes": 1102
+    },
+    {
+      "path": "packages/chain/src/handover.ts",
+      "sha256": "61E10627240DA60C7D0DC71AB60288D3CBBAA99E411B7EF4A39EBCC1C4190E13",
+      "bytes": 4974
+    },
+    {
+      "path": "packages/chain/src/tatum.ts",
+      "sha256": "4470834CF574586ABBB9EDD818EED94DD50B617E3E4801BD56594DCB1CE1A30D",
+      "bytes": 2927
+    },
+    {
+      "path": "packages/domain/src/models.ts",
+      "sha256": "1E8AB45B5118CB20A0A19A7C61C65644E9894D9FBFFE6DF0F679335BBD7E139F",
+      "bytes": 2987
+    },
+    {
+      "path": "packages/domain/src/preferences.ts",
+      "sha256": "FA4AD8B339073D1D89BAC1C17499628871EF82FAC895A4727F102857F040050B",
+      "bytes": 1451
+    },
+    {
+      "path": "packages/domain/src/reconcile.ts",
+      "sha256": "65CCBD71B5EDC9DF356C3A08D15D230C7130288F4526188C5F0503466F75FBB9",
+      "bytes": 5086
+    },
+    {
+      "path": "packages/domain/src/workflow.ts",
+      "sha256": "E477AF1536FC697A9A190B4A8578662747D7E7FDB67E269FE853A3AD8073A9BA",
+      "bytes": 1095
+    },
+    {
+      "path": "packages/memory/src/adapter.ts",
+      "sha256": "6E8E8C4F430094AADF900A2EE352AE45F23DC5FA19F601C484864BCD533968C4",
+      "bytes": 3618
+    },
+    {
+      "path": "packages/memory/src/client.ts",
+      "sha256": "DAD123605E3C61A2D769E3557778ADE644C9415E96425BABC9E3D74BEFFE5B79",
+      "bytes": 2129
+    },
+    {
+      "path": "packages/memory/src/envelope.ts",
+      "sha256": "E0B87245B4477ADB710B57CA3AA2E3D2E8C6F0B9DD9B491F86A63292D5DF14B9",
+      "bytes": 1570
+    },
+    {
+      "path": "playwright.config.ts",
+      "sha256": "F6F175673DA3B8C77F99FB002E4451D55F961D8B147CBB8AE4DD33825BFA3A35",
+      "bytes": 243
+    },
+    {
+      "path": "public/brand/favicon.svg",
+      "sha256": "CF2E84DF33371EE4C821B39CD7254653731BA6B08A357F4514568B5E4F3645BA",
+      "bytes": 4656
+    },
+    {
+      "path": "public/brand/lockup.svg",
+      "sha256": "96539028A0A2D8C67B2E901BCAA266D1D809099D8C6D0C2660AAF0C98F2D97A6",
+      "bytes": 12875
+    },
+    {
+      "path": "scripts/api-smoke.ts",
+      "sha256": "58190C75E76F59C89EDFFD4960F7341A92F5C30CE6619A05A725546419B354FC",
+      "bytes": 2238
+    },
+    {
+      "path": "scripts/chain-evidence.ts",
+      "sha256": "9711E9B3C5A9EC3EC815C9B003CE9FD72A71FC50BD7329EC4AF80B46210F2405",
+      "bytes": 1208
+    },
+    {
+      "path": "scripts/check-client-secrets.ts",
+      "sha256": "EBE87ACC0009C16D2C7A6B19549461FC061DC8A33089D518F900B0FA2199EB8E",
+      "bytes": 780
+    },
+    {
+      "path": "scripts/collect-memory-evidence.ts",
+      "sha256": "569B65BF6C20129AD248341216DE3BCF128737C1989172C5688507E383C4BD82",
+      "bytes": 2667
+    },
+    {
+      "path": "scripts/compile-contract.mjs",
+      "sha256": "D342884422780A8B3E359AC46BE52E1FFEE3A9A7AA63A8F1FF7D55E04477A59D",
+      "bytes": 1641
+    },
+    {
+      "path": "scripts/memory-evidence.ts",
+      "sha256": "803FC37775819CF905ABE4762D5536C4870E09942BB597E7F506914E8DAD4FC9",
+      "bytes": 1614
+    },
+    {
+      "path": "scripts/memory-restore.ts",
+      "sha256": "EEED74658FB3877D5C3EE1DD60CFC1F345052361E37FE0C87202444D43B3D68B",
+      "bytes": 1132
+    },
+    {
+      "path": "scripts/memory-write.ts",
+      "sha256": "36FD965FB91818D2D4DD09799AF7227B2D97B673D097EF35D933B1087BC84CB9",
+      "bytes": 2016
+    },
+    {
+      "path": "scripts/probe.ts",
+      "sha256": "D34B88F0130AAFCE31829578D53AEDABC76C90E46D3A6B6EF17C2254262D6780",
+      "bytes": 2046
+    },
+    {
+      "path": "tests/api/auth.test.ts",
+      "sha256": "27A5611191A06E899651AAA2A2597716589906A4DB5CA39F7377525289D4542B",
+      "bytes": 3836
+    },
+    {
+      "path": "tests/domain/adapter.test.ts",
+      "sha256": "AA835261B571B1745E3DA77906BA019EEA5ED9CC62CE467565CB7F4B951E175C",
+      "bytes": 1563
+    },
+    {
+      "path": "tests/domain/approved-bytes.test.ts",
+      "sha256": "2156F9A58260260EAD6C6B95146FF1C2DDFB2FEE581245C18E6700815D9C0013",
+      "bytes": 1729
+    },
+    {
+      "path": "tests/domain/fixtures.ts",
+      "sha256": "220C636E2918789225BA845A95203F26724FD6A1A01B528786A73356458866ED",
+      "bytes": 1398
+    },
+    {
+      "path": "tests/domain/memory.test.ts",
+      "sha256": "AEE5038241EA59D120DA3D5D07728E99368E18FCFC0A02C4079874834F04C1DA",
+      "bytes": 2262
+    },
+    {
+      "path": "tests/domain/reconcile.test.ts",
+      "sha256": "6E958C7437CADC915A2B2104B07C31E823934BA02E943D7F1B1638BE7FF4A1DD",
+      "bytes": 5584
+    },
+    {
+      "path": "tests/domain/rpc-pacing.test.ts",
+      "sha256": "880C5887C48114CEED878FF58ED70FF8C905DF8A682CBA52C6AFC686F5389549",
+      "bytes": 1422
+    },
+    {
+      "path": "tests/e2e/cockpit.spec.ts",
+      "sha256": "57FB530B5CA672C3DAFEB37642EF5CE27B4337154A1E20351619CB8045D65F3F",
+      "bytes": 2928
+    },
+    {
+      "path": "tests/e2e/wallet-check.spec.ts",
+      "sha256": "96D6DFE75E779D1727EDE42C84906D74BDDCFEC2CE84D11B7CB38CFAC6B0A75F",
+      "bytes": 1309
+    },
+    {
+      "path": "tests/e2e/workspace.spec.ts",
+      "sha256": "489B3EDB88C446A0BED668F336979E7806407C2E1D0BFDDD240F80782F6FD42E",
+      "bytes": 2884
+    },
+    {
+      "path": "tests/recovery/child.ts",
+      "sha256": "41A40203D05DD79BFA5F4D3A75B2E0C479BF0B8AE6ACC00DC1B4A1D1A26A3567",
+      "bytes": 606
+    },
+    {
+      "path": "tests/recovery/engine.test.ts",
+      "sha256": "FB3B8337FA3AD91E6F982BE328D81ABE05BD725D54F0A4FAF7B791B07CABECBC",
+      "bytes": 20633
+    },
+    {
+      "path": "tests/recovery/fixture.ts",
+      "sha256": "DBD502B12FB7799CE46159FA19BFEAD1F0022F6D9534CE28A76393DDDE72D283",
+      "bytes": 4144
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "EE1BBB8986859A673192E026354BC6F4CC5599F1A9275DAD56303924C089009C",
+      "bytes": 437
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "939283C6908681DA0AE69851EE2C994FED3A7E020D8F84CBCD8E1A0B64F2E4F9",
+      "bytes": 316
+    },
+    {
+      "path": "vitest.config.ts",
+      "sha256": "A296691BE8C0E9BE79A3198962CC398B07EFD1CF41CEF541895F12A4214218A3",
+      "bytes": 123
+    }
+  ]
+}

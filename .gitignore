@@ -5,6 +5,7 @@ dist/
 !.env.example
 .reference/
 .data/
+demo-delivery/YouTube-Thumbnail.jpg
 coverage/
 playwright-report/
 test-results/

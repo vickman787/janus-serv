@@ -49,11 +49,13 @@ A narrated walkthrough is included in the repository:
 [`demo-delivery/Janus-OpenServ-Recovery-Copilot-Demo.mp4`](demo-delivery/Janus-OpenServ-Recovery-Copilot-Demo.mp4)
 
 - 86 seconds, 1920×1080, 30 fps, H.264/AAC
-- Captions, voiceover script, poster and description in [`demo-delivery/`](demo-delivery/)
+- Captions, voiceover script, poster, YouTube thumbnail and description in [`demo-delivery/`](demo-delivery/)
 - ElevenLabs synthetic narration
 - Real isolated Sui Testnet footage, not a mocked success state
 
-[![Demo poster](demo-delivery/Poster.jpg)](demo-delivery/Janus-OpenServ-Recovery-Copilot-Demo.mp4)
+[![Watch the Janus Recovery Copilot demo](demo-delivery/YouTube-Thumbnail.jpg)](demo-delivery/Janus-OpenServ-Recovery-Copilot-Demo.mp4)
+
+YouTube thumbnail: [`demo-delivery/YouTube-Thumbnail.jpg`](demo-delivery/YouTube-Thumbnail.jpg) (1280×720).
 
 ## Product tour
 

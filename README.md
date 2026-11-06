@@ -40,19 +40,7 @@ The model cannot sign, submit, retry, or override the verdict. The existing wall
 | Authentication | Wallet signature authentication with random server-side session tokens. No `JANUS_SESSION_SECRET` is used. |
 | Local validation | 109/109 tests, 25/25 copilot tests, 20/20 cockpit browser fixtures, typecheck and production build. |
 | Real integration | Provider smoke, fixture analysis and an isolated live Sui Testnet E2E run have passed. |
-| Hosting | Runs locally. No public application URL is claimed. The repository and demo video are the reproducible deliverables. |
-
-## Demo video
-
-A narrated walkthrough is included in the repository:
-
-[`demo-delivery/Janus-OpenServ-Recovery-Copilot-Demo.mp4`](demo-delivery/Janus-OpenServ-Recovery-Copilot-Demo.mp4)
-
-- 86 seconds, 1920×1080, 30 fps, H.264/AAC
-- Captions, voiceover script, poster and description in [`demo-delivery/`](demo-delivery/)
-- ElevenLabs synthetic narration
-- Real isolated Sui Testnet footage, not a mocked success state
-
+| Hosting | Runs locally. No public application URL is claimed. The repository is the reproducible deliverable. |
 
 ## Product tour
 

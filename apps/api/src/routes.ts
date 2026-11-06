@@ -5,17 +5,30 @@ import { address, uint } from '../../../packages/domain/src/models.js';
 import { workflowSchema } from '../../../packages/domain/src/workflow.js';
 import { ZERO } from '../../../packages/chain/src/handover.js';
 import { Engine, WorkflowError, type Preparation } from './engine.js';
+import { CopilotError } from '../../../packages/copilot/src/errors.js';
+import type { CopilotService } from '../../../packages/copilot/src/analyze.js';
+import { disabledCapabilities } from '../../../packages/copilot/src/config.js';
 export function applicationRoutes(engine:Engine, session:(req:IncomingMessage)=>string, actor:(req:IncomingMessage)=>string|undefined, sessionHash:(req:IncomingMessage)=>string,
-  body:(req:IncomingMessage)=>Promise<unknown>,reply:(res:ServerResponse,status:number,value:unknown)=>void) {
+  body:(req:IncomingMessage)=>Promise<unknown>,reply:(res:ServerResponse,status:number,value:unknown)=>void, copilot?:CopilotService) {
   return async(req:IncomingMessage,res:ServerResponse):Promise<boolean>=>{
     const url=new URL(req.url??'/', 'http://localhost');const path=url.pathname;
     if(req.method==='GET'&&path==='/api/config') {reply(res,200,{network:'testnet',memoryNetwork:process.env.WALRUS_MEMORY_NETWORK??'mainnet',packageId:engine.chain.packageId===ZERO?null:engine.chain.packageId,
-      packageCompiled:(existsSync('.data/package.json')||existsSync('contracts/janus_handover/compiled/package.json')),walletApprovalRequired:true,writerFingerprint:engine.memory.writer,localDevelopment:true});return true;}
+      packageCompiled:(existsSync('.data/package.json')||existsSync('contracts/janus_handover/compiled/package.json')),walletApprovalRequired:true,writerFingerprint:engine.memory.writer,localDevelopment:true,
+      copilot:copilot?.capabilities()??disabledCapabilities('Recovery Copilot is disabled because the server did not construct a copilot service')});return true;}
     if(req.method==='GET'&&(path==='/api/operations'||path==='/api/public/operations')){reply(res,200,{operations:engine.list(actor(req),path.includes('/public/'))});return true;}
     if(req.method==='GET'&&path==='/api/controls') {const who=actor(req);reply(res,200,{controls:who?engine.db.prepare('SELECT * FROM controls WHERE creator=? ORDER BY created DESC').all(who):[]});return true;}
     const controlMatch=path.match(/^\/api\/controls\/(0x[0-9a-f]{64})$/);
     if(req.method==='GET'&&controlMatch){reply(res,200,await engine.chain.control(controlMatch[1]!));return true;}
     if(req.method==='GET'&&path==='/api/preparations') {const who=session(req);const rows=engine.db.prepare("SELECT * FROM preparations WHERE actor=? AND state NOT IN ('completed','discarded','failed') ORDER BY created DESC").all(who) as Preparation[];reply(res,200,{preparations:rows.map(p=>({...engine.publicPreparation(p),sameSession:p.session_hash===sessionHash(req)}))});return true;}
+    const copilotMatch=path.match(/^\/api\/operations\/([0-9a-f-]{36})\/copilot\/(assess|assessments|jobs)(?:\/([0-9a-f-]{36}))?$/);
+    if(copilotMatch){
+      const id=copilotMatch[1]!,kind=copilotMatch[2]!,resourceId=copilotMatch[3];
+      if(!copilot)throw new CopilotError('Recovery Copilot is not configured',503,'not_configured');
+      if(req.method==='POST'&&kind==='assess'&&!resourceId){const who=session(req);z.object({approved:z.literal(true)}).strict().parse(await body(req));const result=await copilot.enqueue(id,who);void copilot.tick().catch(()=>{});reply(res,202,result);return true;}
+      if(req.method==='GET'&&kind==='assessments'&&!resourceId){const who=session(req);reply(res,200,copilot.listAssessments(id,who));return true;}
+      if(req.method==='GET'&&kind==='assessments'&&resourceId){const who=session(req);reply(res,200,copilot.getAssessment(id,who,resourceId));return true;}
+      if(req.method==='GET'&&kind==='jobs'&&resourceId){const who=session(req);reply(res,200,copilot.getJob(id,who,resourceId));return true;}
+    }
     const match=path.match(/^\/api\/operations\/([0-9a-f-]{36})(?:\/(revalidate|evidence|recovery-reference|approve-live|prepare-(?:propose|accept|cancel|change_successor|expire)))?$/);
     if(match){const id=match[1]!,action=match[2];
       if(req.method==='GET'){
@@ -29,7 +42,7 @@ export function applicationRoutes(engine:Engine, session:(req:IncomingMessage)=>
       }
     }
     if(req.method==='POST'&&path==='/api/operations') {const who=session(req);const input=z.object({label:z.string().max(100),control:address,successor:address,expiresAtMs:uint,public:z.boolean()}).strict().parse(await body(req));reply(res,201,await engine.create(input,who,sessionHash(req)));return true;}
-    if(req.method==='POST'&&path==='/api/operations/restore') {const who=session(req);const input=z.object({version:z.literal(1),operationId:z.string().uuid(),network:z.literal('testnet'),memoryNetwork:z.string(),ref:z.object({namespace:z.string().regex(/^janus-record-[0-9a-f-]{36}$/),blobId:z.string(),memoryId:z.string(),contentHash:z.string().regex(/^[0-9a-f]{64}$/)}).strict(),writerFingerprint:z.string()}).strict().parse(await body(req));
+    if(req.method==='POST'&&path==='/api/operations/restore') {const who=session(req);const input=z.object({version:z.literal(1),operationId:z.string().uuid(),network:z.literal('testnet'),memoryNetwork:z.string(),ref:z.object({namespace:z.string().regex(/^janus-openserv-record-[0-9a-f-]{36}$/),blobId:z.string(),memoryId:z.string(),contentHash:z.string().regex(/^[0-9a-f]{64}$/)}).strict(),writerFingerprint:z.string()}).strict().parse(await body(req));
       if(input.writerFingerprint!==engine.memory.writer||input.memoryNetwork!==(process.env.WALRUS_MEMORY_NETWORK??'mainnet'))throw new WorkflowError('Recovery reference writer or network is not trusted');
       const record=await engine.memory.read(input.ref);const cp=workflowSchema.parse(record.data);if(cp.operationId!==input.operationId||cp.packageId!==engine.chain.packageId||record.owner!==cp.administrator||![cp.administrator,cp.successor].includes(who))throw new WorkflowError('Recovery reference participant or identity mismatch',403);
       const exists=engine.db.prepare('SELECT id FROM operations WHERE id=?').get(cp.operationId);

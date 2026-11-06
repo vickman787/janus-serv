@@ -1,0 +1,79 @@
+1
+00:00:00,000 --> 00:00:05,061
+Janus is a recovery cockpit for Sui handovers. It restores signed intent
+
+2
+00:00:05,061 --> 00:00:09,841
+from Walrus Memory, compares it with fresh Sui testnet evidence, and
+
+3
+00:00:09,841 --> 00:00:13,707
+blocks unsafe actions. This is an isolated testnet run.
+
+4
+00:00:14,010 --> 00:00:18,612
+Here the handover is complete. Remembered state and live chain state
+
+5
+00:00:18,612 --> 00:00:23,552
+agree, and the deterministic verdict reports verified acceptance effects.
+
+6
+00:00:23,552 --> 00:00:26,124
+The model never controls this verdict.
+
+7
+00:00:26,420 --> 00:00:31,143
+Three confirmed testnet transactions, propose, successor change, and
+
+8
+00:00:31,143 --> 00:00:34,616
+acceptance, are verified from their known digests.
+
+9
+00:00:34,920 --> 00:00:40,161
+Recovery Copilot sends a minimized, source labeled bundle to Dolphin for
+
+10
+00:00:40,161 --> 00:00:45,256
+interpretation, then to SERV Reasoning for a structured plan. Both are
+
+11
+00:00:45,256 --> 00:00:46,160
+advisory.
+
+12
+00:00:46,210 --> 00:00:51,134
+On a completed handover, it returns only inspect and wait. Every finding
+
+13
+00:00:51,134 --> 00:00:55,921
+cites a validated source ID, from the checkpoint and live state to the
+
+14
+00:00:55,921 --> 00:00:57,358
+transaction evidence.
+
+15
+00:00:57,660 --> 00:01:02,302
+Earlier assessments stay visible. This ready state plan is now stale
+
+16
+00:01:02,302 --> 00:01:07,285
+because the handover completed, so Janus asks for revalidation instead of
+
+17
+00:01:07,285 --> 00:01:08,651
+silently reusing it.
+
+18
+00:01:08,950 --> 00:01:14,391
+Dolphin and SERV cannot sign, submit, or override the verdict. Sui,
+
+19
+00:01:14,391 --> 00:01:20,076
+Walrus, Tatum, and the wallet pipeline stay deterministic. Janus, with
+
+20
+00:01:20,076 --> 00:01:22,187
+OpenServ Recovery Copilot.

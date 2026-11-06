@@ -12,7 +12,19 @@ export class Store {
       CREATE TABLE IF NOT EXISTS preferences (owner TEXT PRIMARY KEY,id TEXT NOT NULL,revision INTEGER NOT NULL,revoked INTEGER NOT NULL,ref TEXT NOT NULL,updated TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS config (key TEXT PRIMARY KEY,value TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS memory_jobs (id TEXT PRIMARY KEY,namespace TEXT NOT NULL,hash TEXT NOT NULL,scope TEXT NOT NULL,status TEXT NOT NULL);
-      CREATE TABLE IF NOT EXISTS controls (id TEXT PRIMARY KEY,creator TEXT NOT NULL,created TEXT NOT NULL);`);
+      CREATE TABLE IF NOT EXISTS controls (id TEXT PRIMARY KEY,creator TEXT NOT NULL,created TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS copilot_jobs (id TEXT PRIMARY KEY,operation_id TEXT NOT NULL,actor TEXT NOT NULL,
+        evidence_hash TEXT NOT NULL,evidence_json TEXT NOT NULL,status TEXT NOT NULL,prompt_version TEXT NOT NULL,
+        dolphin_model TEXT NOT NULL,serv_model TEXT NOT NULL,assessment_id TEXT,error TEXT,reasons TEXT,
+        attempts INTEGER NOT NULL DEFAULT 0,created TEXT NOT NULL,updated TEXT NOT NULL,started TEXT,finished TEXT,usage_json TEXT);
+      CREATE INDEX IF NOT EXISTS copilot_jobs_lookup ON copilot_jobs(operation_id,actor,evidence_hash,status);
+      CREATE INDEX IF NOT EXISTS copilot_jobs_created ON copilot_jobs(actor,created);
+      CREATE TABLE IF NOT EXISTS copilot_assessments (id TEXT PRIMARY KEY,job_id TEXT NOT NULL,operation_id TEXT NOT NULL,
+        actor TEXT NOT NULL,evidence_hash TEXT NOT NULL,evidence_json TEXT NOT NULL,assessment_json TEXT NOT NULL,
+        validation_json TEXT NOT NULL,provider_json TEXT NOT NULL,checkpoint_sequence INTEGER NOT NULL,
+        operation_updated TEXT NOT NULL,verdict_code TEXT NOT NULL,checkpoint_revision TEXT NOT NULL,
+        live_revision TEXT,live_proposal_stage INTEGER,created TEXT NOT NULL);
+      CREATE INDEX IF NOT EXISTS copilot_assessments_lookup ON copilot_assessments(operation_id,actor,created);`);
   }
   log(operation: string | null, actor: string | null, kind: string, message: string) { this.db.prepare('INSERT INTO journal(operation_id,actor,kind,message,created) VALUES (?,?,?,?,?)').run(operation,actor,kind,message,new Date().toISOString()); }
   async lease<T>(id: string, work: () => Promise<T>): Promise<T> {

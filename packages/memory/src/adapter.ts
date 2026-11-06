@@ -7,7 +7,7 @@ export type MemoryRef = { namespace: string; blobId: string; memoryId: string; c
 export type MemoryRecord = { kind: 'checkpoint' | 'preference' | 'journal' | 'outcome' | 'intent'; owner: string; operationId?: string; sequence: number; previousHash?: string; previousId?: string; createdAt: string; data: unknown };
 export class MemoryAdapter {
   readonly key; readonly writer: string;
-  constructor(readonly client: MemWal, keyPath = '.data/writer-private.pem', allowNewWriter=true) {
+  constructor(readonly client: MemWal, keyPath = '.data/writer-private.pem', allowNewWriter=true, readonly namespacePrefix = 'janus-openserv-record') {
     if (!existsSync(keyPath)) {
       if(!allowNewWriter)throw new Error('Trusted writer key missing. Restore its backup before accessing existing records.');
       const key = generateKeyPairSync('ed25519');
@@ -19,7 +19,8 @@ export class MemoryAdapter {
   async write(record: MemoryRecord, accepted?: (jobId: string, namespace: string, contentHash: string) => void): Promise<MemoryRef> {
     const payload = JSON.stringify(record);
     const text = JSON.stringify({ version: 1, writer: this.writer, payload, signature: sign(null, Buffer.from(payload), this.key).toString('base64') });
-    const namespace = `janus-record-${randomUUID()}`;
+    if (!/^[a-z0-9][a-z0-9-]{0,39}$/.test(this.namespacePrefix)) throw new Error('Invalid memory namespace prefix');
+    const namespace = `${this.namespacePrefix}-${randomUUID()}`;
     const job = await this.client.remember(text, namespace, { idempotencyKey: sha256(text) });
     accepted?.(job.job_id, namespace, sha256(text));
     const result = await this.client.waitForRememberJob(job.job_id, { timeoutMs: 60_000 });

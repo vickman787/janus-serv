@@ -16,21 +16,50 @@ import { createTatumClient, isProviderRateLimit } from '../../../packages/chain/
 import { createMemoryClient } from '../../../packages/memory/src/client.js';
 import { verifyApprovedBytes } from '../../../packages/chain/src/approved-bytes.js';
 import { AuthStore, AuthError } from './auth.js';
+import { CopilotError } from '../../../packages/copilot/src/errors.js';
+import { CopilotService } from '../../../packages/copilot/src/analyze.js';
+import { copilotConfigFromEnv } from '../../../packages/copilot/src/config.js';
+import { DolphinProvider } from '../../../packages/copilot/src/dolphin.js';
+import { ServProvider } from '../../../packages/copilot/src/serv.js';
 
 const network = z.literal('testnet').parse(process.env.SUI_NETWORK ?? 'testnet');
 const origin = process.env.JANUS_RUNTIME_ORIGIN ?? 'http://localhost:4310';
 const runtimeUrl = new URL(origin);
+if (runtimeUrl.origin !== origin) throw new Error('JANUS_RUNTIME_ORIGIN must be a canonical origin without a path');
+const allowedOrigins = new Set([origin, ...(process.env.JANUS_ALLOWED_ORIGINS ?? '').split(',').map(value => value.trim()).filter(Boolean)]);
+for (const allowed of allowedOrigins) {
+  const parsed = new URL(allowed);
+  if (!['http:', 'https:'].includes(parsed.protocol) || parsed.origin !== allowed) throw new Error(`Invalid allowed origin: ${allowed}`);
+}
 const port = Number(process.env.JANUS_PORT ?? '4311');
+const databasePath = process.env.JANUS_DATABASE_PATH?.trim() || '.data/janus-openserv.sqlite';
+if (!/^\.data\/[A-Za-z0-9._-]+\.sqlite$/.test(databasePath)) throw new Error('JANUS_DATABASE_PATH must be a .sqlite file directly under .data/');
+const writerKeyPath = process.env.JANUS_WRITER_KEY_PATH?.trim() || '.data/openserv-writer-private.pem';
+if (!/^\.data\/[A-Za-z0-9._-]+\.pem$/.test(writerKeyPath)) throw new Error('JANUS_WRITER_KEY_PATH must be a .pem file directly under .data/');
+const recordPrefix = z.string().regex(/^[a-z0-9][a-z0-9-]{0,39}$/, 'Invalid WALRUS_MEMORY_RECORD_PREFIX').parse(process.env.WALRUS_MEMORY_RECORD_PREFIX ?? 'janus-openserv-record');
 mkdirSync('.data', { recursive: true });
-const db = new DatabaseSync('.data/janus.sqlite');
+const db = new DatabaseSync(databasePath);
 
 const { client, close } = createTatumClient();
 const auth = new AuthStore(db, origin, network, { client });
 const memory = createMemoryClient();
 const store = new Store(db);
 const storedPackage = db.prepare('SELECT value FROM config WHERE key=?').get('packageId') as {value:string}|undefined;
-const engine = new Engine(store, new ChainAdapter(client, storedPackage?.value ?? (process.env.JANUS_PACKAGE_ID || ZERO)), new MemoryAdapter(memory, process.env.JANUS_WRITER_KEY_PATH || '.data/writer-private.pem',Number((db.prepare('SELECT COUNT(*) AS count FROM memories').get() as {count:number}).count)===0));
-const appRoutes = applicationRoutes(engine, session, req=>auth.actor(token(req)), req=>auth.hash(token(req)), body, reply);
+const engine = new Engine(store, new ChainAdapter(client, storedPackage?.value ?? (process.env.JANUS_PACKAGE_ID || ZERO)), new MemoryAdapter(memory, writerKeyPath,Number((db.prepare('SELECT COUNT(*) AS count FROM memories').get() as {count:number}).count)===0,recordPrefix));
+const copilotSettings = copilotConfigFromEnv();
+const copilot = new CopilotService({
+  store, engine,
+  dolphin: new DolphinProvider(copilotSettings.config.dolphin),
+  serv: new ServProvider(copilotSettings.config.serv),
+  config: copilotSettings.config,
+  capabilities: copilotSettings.capabilities,
+});
+copilot.recoverInterrupted();
+let copilotActive = false;
+const copilotTimer = copilotSettings.config.enabled
+  ? setInterval(async()=>{if(copilotActive)return;copilotActive=true;try{await copilot.tick();}catch{}finally{copilotActive=false;}},4000)
+  : undefined;
+const appRoutes = applicationRoutes(engine, session, req=>auth.actor(token(req)), req=>auth.hash(token(req)), body, reply, copilot);
 let workerActive = false;
 const workerTimer = setInterval(async()=>{if(workerActive)return;workerActive=true;try{await engine.tick();}catch{}finally{workerActive=false;}},20000);
 const walletAddress = z.string().regex(/^0x[0-9a-f]{64}$/);
@@ -67,6 +96,7 @@ async function health() {
     const value = { network, memoryNetwork: process.env.WALRUS_MEMORY_NETWORK ?? 'mainnet', fetchedAt: new Date().toISOString(),
       tatum: chainResult.status === 'fulfilled' ? { status: 'verified', checkpoint: chainResult.value.response.checkpoint?.sequenceNumber?.toString() } : { status: 'unavailable' },
       walrus: memoryResult.status === 'fulfilled' ? { status: 'authenticated' } : { status: 'unavailable' },
+      copilot: copilot.capabilities(),
       worker: { status: 'running_with_api', heartbeat: (db.prepare('SELECT value FROM config WHERE key=?').get('workerHeartbeat') as {value:string}|undefined)?.value ?? null }, package: { status: engine.chain.packageId===ZERO?'not_published':'configured', id: engine.chain.packageId===ZERO?null:engine.chain.packageId, compiled: (existsSync('.data/package.json')||existsSync('contracts/janus_handover/compiled/package.json')) } };
     healthCache = { at: Date.now(), value }; return value;
   })();
@@ -80,7 +110,7 @@ const server = createServer(async (req, res) => {
     for (const [k, v] of limits) if (v.expires <= now) limits.delete(k);
     const quota = limits.get(key) ?? { count: 0, expires: now + 60_000 }; quota.count++; limits.set(key, quota);
     if (quota.count > (req.method==='POST'?60:240)) return reply(res, 429, { error: 'Too many requests; wait a minute' });
-    if (req.method === 'POST' && req.headers.origin !== origin) return reply(res, 403, { error: 'Request origin rejected' });
+    if (req.method === 'POST' && !allowedOrigins.has(req.headers.origin ?? '')) return reply(res, 403, { error: 'Request origin rejected' });
     const route = req.url?.split('?')[0];
     if (req.method === 'GET' && route === '/api/health') return reply(res, 200, await health());
     if (req.method === 'GET' && route === '/api/session') return reply(res, 200, { actor: auth.session(token(req))?.actor ?? null, expiresAt: auth.session(token(req))?.expiresAt ?? null, network });
@@ -133,6 +163,7 @@ const server = createServer(async (req, res) => {
     if(req.method==='GET' && !route?.startsWith('/api/')){if(await serveWeb(req,res))return;}
     return reply(res, 404, { error: 'Endpoint not available' });
   } catch (error) {
+    if (error instanceof CopilotError) return reply(res,error.status,{error:error.message,code:error.code});
     if (error instanceof WorkflowError) return reply(res,error.status,{error:error.message,...(error.operationId?{operationId:error.operationId}:{})});
     if (error instanceof BusyError) return reply(res,409,{error:error.message});
     if (error instanceof AuthError) return reply(res, 401, { error: error.message });
@@ -145,5 +176,5 @@ const server = createServer(async (req, res) => {
 });
 server.requestTimeout = 30_000; server.headersTimeout = 10_000;
 server.listen(port, process.env.JANUS_BIND ?? '127.0.0.1', () => console.log('Janus integration API: http://localhost:4311 (local app; wallet-approved testnet transactions only)'));
-function shutdown() { clearInterval(workerTimer); server.close(); close(); memory.destroy(); db.close(); }
+function shutdown() { clearInterval(workerTimer); if(copilotTimer)clearInterval(copilotTimer); server.close(); close(); memory.destroy(); db.close(); }
 process.once('SIGINT', shutdown); process.once('SIGTERM', shutdown);

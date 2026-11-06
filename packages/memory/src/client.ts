@@ -16,7 +16,7 @@ export function createMemoryClient(env: NodeJS.ProcessEnv = process.env) {
 
 export const recoveryReferenceSchema = z.object({
   version: z.literal(1), network: z.enum(['mainnet', 'testnet']),
-  accountId: z.string(), namespace: z.string().regex(/^janus-record-[0-9a-f-]{36}$/),
+  accountId: z.string(), namespace: z.string().regex(/^janus-openserv-record-[0-9a-f-]{36}$/),
   memoryId: z.string().min(1), blobId: z.string().min(1), contentHash: z.string().regex(/^[a-f0-9]{64}$/),
 }).strict();
 export type RecoveryReference = z.infer<typeof recoveryReferenceSchema>;

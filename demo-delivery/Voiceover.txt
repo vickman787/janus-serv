@@ -1,0 +1,13 @@
+Janus is a recovery cockpit for Sui handovers. It restores signed intent from Walrus Memory, compares it with fresh Sui testnet evidence, and blocks unsafe actions. This is an isolated testnet run.
+
+Here the handover is complete. Remembered state and live chain state agree, and the deterministic verdict reports verified acceptance effects. The model never controls this verdict.
+
+Three confirmed testnet transactions, propose, successor change, and acceptance, are verified from their known digests.
+
+Recovery Copilot sends a minimized, source labeled bundle to Dolphin for interpretation, then to SERV Reasoning for a structured plan. Both are advisory.
+
+On a completed handover, it returns only inspect and wait. Every finding cites a validated source ID, from the checkpoint and live state to the transaction evidence.
+
+Earlier assessments stay visible. This ready state plan is now stale because the handover completed, so Janus asks for revalidation instead of silently reusing it.
+
+Dolphin and SERV cannot sign, submit, or override the verdict. Sui, Walrus, Tatum, and the wallet pipeline stay deterministic. Janus, with OpenServ Recovery Copilot.

@@ -37,3 +37,35 @@ Initialize a new Git repository here before implementation and use a separate fu
 The runtime evidence comes from `Engine.view()` in `apps/api/src/engine.ts`. Its result combines restored checkpoint, live chain evidence, deterministic verdict, journal, and approved preference. Add an advisory analysis layer around that result; keep transaction preparation and signing permissions deterministic.
 
 See `OPEN_SERV_BUILD_INSTRUCTIONS.md` for the exact file map, provider verification gates, UI requirements, evaluation, and acceptance criteria.
+
+## OpenServ implementation status
+
+The Recovery Copilot is implemented locally around the actual `Engine.view()` path. It uses separate, documented provider calls:
+
+- Dolphin Network: `https://lighthouse.dphn.ai/run/text-v/v1`, model `deepseek-ai/DeepSeek-V4.1-Flash`, for evidence/history interpretation.
+- SERV Reasoning: `https://inference-api.openserv.ai/v1`, model `gpt-5.4-mini`, for strict-schema recovery planning.
+
+Provider smoke, a synthetic fixture analysis, and an isolated live testnet E2E flow now pass against both official endpoints. The E2E covers package/control deployment, proposal, successor mismatch and approval, acceptance, copilot ready/completed assessments, stale detection, counter, preference, memory isolation, and cancellation. Fixture tests, typecheck, and build pass; the broader 20–30 scenario evaluation is still pending. See `docs/openserv-evaluation.md`. The deterministic wallet/recovery path is unchanged and model output cannot grant signing permission.
+
+This copy is isolated from the submitted Walrus edition: it uses a fresh local database (`.data/janus-openserv.sqlite`), a new record-signing key (`.data/openserv-writer-private.pem`), and `janus-openserv-record-*` memory namespaces. The existing Walrus Memory account is accessed only through the new OpenServ delegate credential. No Janus-sui record is modified or deleted. Session authentication is unchanged and `JANUS_SESSION_SECRET` is not required.
+
+To enable providers locally:
+
+```powershell
+Copy-Item .env.example .env
+# Fill DOLPHIN_API_KEY and SERV_API_KEY, set COPILOT_ENABLED=true.
+npm run copilot:smoke
+npm run dev:api
+npm run dev:web
+```
+
+Without both keys, `/api/config` reports the copilot disabled and no evidence is sent. Further detail:
+
+- `docs/openserv-integration.md` — verified routes, architecture, data boundary, API, validation, configuration.
+- `docs/openserv-prior-work.md` — inherited Walrus work versus the new OpenServ contribution.
+- `docs/openserv-evaluation.md` — executed results and the real-model evaluation still pending.
+- `docs/openserv-demo.md` — demo scenarios and capture checklist.
+
+## Demo video
+
+A narrated demo from the isolated Sui testnet run is included at [`demo-delivery/Janus-OpenServ-Recovery-Copilot-Demo.mp4`](demo-delivery/Janus-OpenServ-Recovery-Copilot-Demo.mp4), with captions, script, description and poster in the same folder. Narration is synthetic (ElevenLabs); the footage is a real testnet run with disposable wallets, not a mocked success state.

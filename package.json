@@ -19,7 +19,9 @@
     "worker": "tsx --env-file-if-exists=.env apps/worker/src/main.ts",
     "test:browser": "playwright test",
     "compile:contract": "node scripts/compile-contract.mjs",
-    "evidence:memories": "tsx --env-file-if-exists=.env scripts/collect-memory-evidence.ts"
+    "evidence:memories": "tsx --env-file-if-exists=.env scripts/collect-memory-evidence.ts",
+    "copilot:smoke": "tsx --env-file-if-exists=.env scripts/copilot-provider-smoke.ts",
+    "copilot:fixture-analysis": "tsx --env-file-if-exists=.env scripts/copilot-fixture-analysis.ts"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.14.6",

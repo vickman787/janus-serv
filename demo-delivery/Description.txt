@@ -1,0 +1,12 @@
+Janus + OpenServ Recovery Copilot — isolated Sui testnet demo
+
+Janus is a Sui handover recovery cockpit. This demo shows a completed testnet handover, deterministic evidence from Walrus Memory and Tatum, and the advisory Recovery Copilot using Dolphin Network and SERV Reasoning.
+
+Track: Dolphin
+Providers: Dolphin Network (deepseek-ai/DeepSeek-V4.1-Flash) and SERV Reasoning (gpt-5.4-mini)
+Network: Sui testnet; Walrus Memory mainnet test namespaces
+Narration: synthetic voice generated with ElevenLabs (Daniel voice, eleven_v4).
+
+The model output is advisory. Application validation rejected unsupported references and prohibited wallet-review advice during testing. All transactions and results shown are from an isolated testnet run with disposable wallets; no production or mainnet transaction is depicted.
+
+Project: Janus — Walrus edition prior work plus the new OpenServ Recovery Copilot feature.

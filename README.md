@@ -376,7 +376,7 @@ tests/                   Domain, API, recovery, copilot and browser fixtures
 
 - This is an **OpenServ edition** of existing Janus work, not a new rebuild of the Sui/Walrus/Tatum foundation.
 - All shown transactions are **Sui Testnet**; no Mainnet transaction is claimed.
-- No hosted application URL is required or claimed. The demo video and local repository are the deliverable.
+- No hosted application URL is required or claimed. The local repository is the deliverable.
 - The 20–30 scenario model-quality evaluation, repeated-run statistics and Dolphin-only comparison are still pending.
 - Model output is stochastic. Validation caught real invalid references and prohibited actions during testing; bounded retries were sometimes needed.
 - Test-only Walrus records from the isolated E2E remain under the E2E namespace and cannot necessarily be deleted.

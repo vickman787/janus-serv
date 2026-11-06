@@ -53,7 +53,6 @@ A narrated walkthrough is included in the repository:
 - ElevenLabs synthetic narration
 - Real isolated Sui Testnet footage, not a mocked success state
 
-[![Watch the Janus Recovery Copilot demo](demo-delivery/Poster.jpg)](demo-delivery/Janus-OpenServ-Recovery-Copilot-Demo.mp4)
 
 ## Product tour
 

@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1020" viewBox="0 0 1600 1020" role="img" aria-labelledby="title desc">
+  <title id="title">Janus OpenServ integration architecture</title>
+  <desc id="desc">Sui wallet authentication and wallet-approved transactions feed the Janus engine. The engine restores signed Walrus Memory records and observes Sui testnet through Tatum. Engine.view produces an allowlisted evidence bundle. Dolphin interprets the evidence, SERV Reasoning plans, and application validation keeps the model advisory. The cockpit shows source-linked results, while the existing wallet review remains the only execution path.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6f83c9"/>
+    </marker>
+    <style>
+      .bg { fill: #0b0d12; }
+      .box { fill: #0e1118; stroke: #2c3a5c; stroke-width: 2; }
+      .box-accent { fill: #111b32; stroke: #4d6bff; stroke-width: 2; }
+      .box-advisory { fill: #101827; stroke: #6f83c9; stroke-width: 2; stroke-dasharray: 8 6; }
+      .label { fill: #a2aab8; font: 600 12px 'Segoe UI', Arial, sans-serif; letter-spacing: 1.4px; }
+      .title { fill: #f1f3f2; font: 600 34px 'Segoe UI', Arial, sans-serif; }
+      .subtitle { fill: #a2aab8; font: 16px 'Segoe UI', Arial, sans-serif; }
+      .box-title { fill: #f1f3f2; font: 600 20px 'Segoe UI', Arial, sans-serif; }
+      .box-copy { fill: #a2aab8; font: 14px 'Segoe UI', Arial, sans-serif; }
+      .box-copy-small { fill: #8d97aa; font: 13px 'Segoe UI', Arial, sans-serif; }
+      .accent { fill: #aab9ff; }
+      .green { fill: #b7e8cf; }
+      .amber { fill: #f2dfb3; }
+      .arrow { stroke: #6f83c9; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .arrow-dashed { stroke: #8f7ed8; stroke-width: 2; fill: none; stroke-dasharray: 7 5; marker-end: url(#arrow); }
+      .edge-label { fill: #8d97aa; font: 12px 'Segoe UI', Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1600" height="1020" rx="18"/>
+  <text class="label" x="70" y="64">JANUS / OPENSERV / ARCHITECTURE</text>
+  <text class="title" x="70" y="108">Deterministic recovery, advisory reasoning</text>
+  <text class="subtitle" x="70" y="138">Sui testnet execution stays wallet-owned. Dolphin and SERV only explain and plan.</text>
+
+  <!-- authority boundary -->
+  <rect x="46" y="176" width="1508" height="300" rx="18" fill="none" stroke="#2b395e" stroke-width="1.5" stroke-dasharray="3 7"/>
+  <text class="label" x="70" y="202">DETERMINISTIC AUTHORITY</text>
+
+  <!-- top row -->
+  <g>
+    <rect class="box" x="70" y="230" width="330" height="150" rx="12"/>
+    <text class="box-title" x="94" y="268">Sui Testnet wallet</text>
+    <text class="box-copy" x="94" y="300">wallet-standard signature auth</text>
+    <text class="box-copy" x="94" y="324">wallet-approved transactions</text>
+    <text class="box-copy-small" x="94" y="352">No server-side spending key</text>
+  </g>
+
+  <g>
+    <rect class="box-accent" x="560" y="230" width="480" height="150" rx="12"/>
+    <text class="box-title" x="584" y="268">Janus API / Engine.view()</text>
+    <text class="box-copy" x="584" y="300">restore checkpoint + observe live chain</text>
+    <text class="box-copy" x="584" y="324">verdict, differences, journal, preference</text>
+    <text class="box-copy-small accent" x="584" y="352">the only recovery and signing authority</text>
+  </g>
+
+  <g>
+    <rect class="box" x="1200" y="230" width="330" height="150" rx="12"/>
+    <text class="box-title" x="1224" y="268">Tatum gRPC</text>
+    <text class="box-copy" x="1224" y="300">live Sui testnet evidence</text>
+    <text class="box-copy" x="1224" y="324">control, proposal, clock, effects</text>
+    <text class="box-copy-small" x="1224" y="352">read-only observation</text>
+  </g>
+
+  <!-- middle row -->
+  <g>
+    <rect class="box" x="70" y="440" width="330" height="160" rx="12"/>
+    <text class="box-title" x="94" y="478">Walrus Memory</text>
+    <text class="box-copy" x="94" y="510">signed checkpoints and preferences</text>
+    <text class="box-copy" x="94" y="534">validated restore, never fallback</text>
+    <text class="box-copy-small" x="94" y="562">OpenServ namespaces: janus-openserv-*</text>
+  </g>
+
+  <g>
+    <rect class="box-accent" x="560" y="440" width="480" height="160" rx="12"/>
+    <text class="box-title" x="584" y="478">RecoveryEvidenceBundle</text>
+    <text class="box-copy" x="584" y="510">allowlisted facts + stable source catalog</text>
+    <text class="box-copy" x="584" y="534">semantic hash + actor scope + verdict</text>
+    <text class="box-copy-small accent" x="584" y="562">no sessions, keys, unsigned bytes or raw envelopes</text>
+  </g>
+
+  <g>
+    <rect class="box" x="1200" y="440" width="330" height="160" rx="12"/>
+    <text class="box-title" x="1224" y="478">Local SQLite</text>
+    <text class="box-copy" x="1224" y="510">durable copilot jobs</text>
+    <text class="box-copy" x="1224" y="534">private assessments + provider metadata</text>
+    <text class="box-copy-small" x="1224" y="562">separate from authoritative checkpoints</text>
+  </g>
+
+  <!-- model boundary -->
+  <rect x="168" y="632" width="900" height="210" rx="18" fill="none" stroke="#5d4f9e" stroke-width="1.5" stroke-dasharray="3 7"/>
+  <text class="label" x="192" y="658">ADVISORY MODEL PATH / NO SIGNING PERMISSION</text>
+
+  <!-- model row -->
+  <g>
+    <rect class="box-advisory" x="190" y="680" width="370" height="140" rx="12"/>
+    <text class="box-title" x="214" y="718">Dolphin Network</text>
+    <text class="box-copy" x="214" y="750">deepseek-ai/DeepSeek-V4.1-Flash</text>
+    <text class="box-copy" x="214" y="774">evidence/history interpretation</text>
+    <text class="box-copy-small" x="214" y="800">draft findings + open questions</text>
+  </g>
+
+  <g>
+    <rect class="box-advisory" x="620" y="680" width="370" height="140" rx="12"/>
+    <text class="box-title" x="644" y="718">SERV Reasoning</text>
+    <text class="box-copy" x="644" y="750">gpt-5.4-mini</text>
+    <text class="box-copy" x="644" y="774">structured recovery planning</text>
+    <text class="box-copy-small" x="644" y="800">JSON schema + bounded retries/timeouts</text>
+  </g>
+
+  <g>
+    <rect class="box" x="1050" y="680" width="380" height="140" rx="12"/>
+    <text class="box-title" x="1074" y="718">Application validation</text>
+    <text class="box-copy" x="1074" y="750">source IDs, addresses, digests</text>
+    <text class="box-copy" x="1074" y="774">verdict preservation + action boundary</text>
+    <text class="box-copy-small green" x="1074" y="800">rejects unsupported or prohibited output</text>
+  </g>
+
+  <!-- bottom row -->
+  <g>
+    <rect class="box-accent" x="190" y="880" width="370" height="96" rx="12"/>
+    <text class="box-title" x="214" y="916">Cockpit UI</text>
+    <text class="box-copy" x="214" y="944">source-linked assessment, stale banner, history</text>
+  </g>
+
+  <g>
+    <rect class="box" x="620" y="880" width="370" height="96" rx="12"/>
+    <text class="box-title" x="644" y="916">Existing wallet review</text>
+    <text class="box-copy" x="644" y="944">prepare → sign → submit remains mandatory</text>
+  </g>
+
+  <g>
+    <rect class="box" x="1050" y="880" width="380" height="96" rx="12"/>
+    <text class="box-title" x="1074" y="916">Deterministic verdict</text>
+    <text class="box-copy" x="1074" y="944">completed · ready · mismatch · unresolved · expired</text>
+  </g>
+
+  <!-- arrows -->
+  <path class="arrow" d="M 400 305 H 560"/>
+  <text class="edge-label" x="438" y="294">auth</text>
+
+  <path class="arrow" d="M 1200 305 H 1040"/>
+  <text class="edge-label" x="1080" y="294">observe</text>
+
+  <path class="arrow" d="M 330 380 V 440"/>
+  <text class="edge-label" x="342" y="416">restore / persist</text>
+
+  <path class="arrow" d="M 800 380 V 440"/>
+  <text class="edge-label" x="812" y="416">view snapshot</text>
+
+  <path class="arrow" d="M 400 520 H 560"/>
+  <text class="edge-label" x="440" y="510">validated context</text>
+
+  <path class="arrow" d="M 660 600 L 430 680"/>
+  <text class="edge-label" x="468" y="636">compact facts + source IDs</text>
+
+  <path class="arrow" d="M 800 600 V 680"/>
+  <text class="edge-label" x="812" y="646">evidence + verdict</text>
+
+  <path class="arrow" d="M 560 750 H 620"/>
+  <text class="edge-label" x="565" y="738">draft</text>
+
+  <path class="arrow" d="M 990 750 H 1050"/>
+  <text class="edge-label" x="996" y="738">structured plan</text>
+
+  <path class="arrow" d="M 1240 680 V 600"/>
+  <text class="edge-label" x="1252" y="646">private record</text>
+
+  <path class="arrow" d="M 1080 820 L 560 880"/>
+  <text class="edge-label" x="700" y="860">advisory display</text>
+
+  <path class="arrow" d="M 560 928 H 620"/>
+  <text class="edge-label" x="560" y="916">never automatic</text>
+
+  <path class="arrow" d="M 990 928 L 1050 928"/>
+  <text class="edge-label" x="994" y="916">remeasured</text>
+</svg>
